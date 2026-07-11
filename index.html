@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShipCrew — the senior engineering team for Claude Code</title>
+</head>
+<body>
+<style>
+  :root{
+    --ground:#eceff4; --ground-2:#e5e9f0; --surface:#ffffff; --surface-2:#f4f6fa;
+    --line:#d2d9e4; --line-2:#c2cad7;
+    --ink:#141922; --ink-soft:#48505f; --ink-faint:#7b8495;
+    --accent:#b46f16; --accent-ink:#8a530d; --accent-soft:rgba(180,111,22,.12); --accent-line:rgba(180,111,22,.34);
+    --pass:#2f9067; --block:#c24a5e; --info:#3d6fb0;
+    --shadow:0 1px 2px rgba(18,24,35,.06), 0 12px 30px -18px rgba(18,24,35,.28);
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --maxw:1080px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0b0e14; --ground-2:#0f131b; --surface:#151b26; --surface-2:#1b232f;
+      --line:#26303f; --line-2:#313d4f;
+      --ink:#e9edf4; --ink-soft:#a6b1c2; --ink-faint:#6a7688;
+      --accent:#f2a63a; --accent-ink:#f7be6b; --accent-soft:rgba(242,166,58,.14); --accent-line:rgba(242,166,58,.30);
+      --pass:#4fbb8b; --block:#e5697c; --info:#6aa5e6;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px -22px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#eceff4; --ground-2:#e5e9f0; --surface:#ffffff; --surface-2:#f4f6fa;
+    --line:#d2d9e4; --line-2:#c2cad7; --ink:#141922; --ink-soft:#48505f; --ink-faint:#7b8495;
+    --accent:#b46f16; --accent-ink:#8a530d; --accent-soft:rgba(180,111,22,.12); --accent-line:rgba(180,111,22,.34);
+    --pass:#2f9067; --block:#c24a5e; --info:#3d6fb0;
+    --shadow:0 1px 2px rgba(18,24,35,.06), 0 12px 30px -18px rgba(18,24,35,.28);
+  }
+  :root[data-theme="dark"]{
+    --ground:#0b0e14; --ground-2:#0f131b; --surface:#151b26; --surface-2:#1b232f;
+    --line:#26303f; --line-2:#313d4f; --ink:#e9edf4; --ink-soft:#a6b1c2; --ink-faint:#6a7688;
+    --accent:#f2a63a; --accent-ink:#f7be6b; --accent-soft:rgba(242,166,58,.14); --accent-line:rgba(242,166,58,.30);
+    --pass:#4fbb8b; --block:#e5697c; --info:#6aa5e6;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px -22px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    transition:background .3s ease,color .3s ease}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em;font-weight:650}
+  p{margin:0}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);text-transform:uppercase;font-size:.72rem;letter-spacing:.19em;
+    color:var(--accent-ink);font-weight:600}
+  .lead{color:var(--ink-soft);font-size:1.075rem;max-width:60ch}
+  .section{padding:clamp(52px,8vw,104px) 0;border-top:1px solid var(--line)}
+  .section.alt{background:var(--ground-2)}
+  .kicker-row{display:flex;flex-direction:column;gap:14px;margin-bottom:40px;max-width:64ch}
+  .kicker-row h2{font-size:clamp(1.55rem,3.4vw,2.25rem)}
+
+  /* --- buttons --- */
+  .btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--mono);font-size:.92rem;
+    font-weight:600;padding:.72em 1.15em;border-radius:10px;border:1px solid transparent;cursor:pointer;
+    text-decoration:none;transition:transform .12s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .btn-primary{background:var(--accent);color:#1a1206;box-shadow:var(--shadow)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent-ink)}
+  .price-strike{color:var(--ink-faint);text-decoration:line-through;font-weight:400;margin-left:.15em}
+
+  /* --- topbar --- */
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 82%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:18px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-weight:700;letter-spacing:-.01em;
+    font-size:1.02rem}
+  .brand .glyph{width:22px;height:22px;border-radius:6px;background:var(--accent);color:#1a1206;
+    display:grid;place-items:center;font-size:.8rem;font-weight:800;box-shadow:var(--shadow)}
+  .top nav{display:flex;align-items:center;gap:22px}
+  .top nav a{font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);text-decoration:none}
+  .top nav a:hover{color:var(--ink)}
+  .icon-btn{background:transparent;border:1px solid var(--line-2);color:var(--ink-soft);width:34px;height:34px;
+    border-radius:9px;cursor:pointer;display:grid;place-items:center;font-size:.95rem}
+  .icon-btn:hover{color:var(--accent-ink);border-color:var(--accent)}
+  .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media(max-width:720px){.top nav .navlink{display:none}}
+
+  /* --- hero --- */
+  .hero{padding:clamp(56px,9vw,120px) 0 clamp(40px,6vw,72px)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,4vw,56px);align-items:center}
+  @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+  .hero h1{font-size:clamp(2.35rem,5.6vw,4rem);line-height:1.02;margin:18px 0 20px}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 18px}
+  .trust{font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);letter-spacing:.02em;line-height:1.8}
+  .trust b{color:var(--ink-soft);font-weight:600}
+
+  /* boot deck */
+  .deck{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow)}
+  .deck-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);
+    background:var(--surface-2)}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--line-2)}
+  .deck-bar .t{font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);margin-left:6px}
+  .deck-body{padding:16px 16px 18px;font-family:var(--mono);font-size:.82rem;line-height:1.95;
+    min-height:250px}
+  .log{white-space:nowrap;overflow:hidden}
+  .log .p{color:var(--accent-ink)}
+  .log .ok{color:var(--pass)}
+  .log .role{color:var(--ink-faint)}
+  .log .name{color:var(--ink)}
+  .reveal-log{opacity:0;transform:translateX(-6px);animation:logIn .42s ease forwards}
+  @keyframes logIn{to{opacity:1;transform:none}}
+  .caret{display:inline-block;width:.62em;height:1.05em;background:var(--accent);vertical-align:-2px;
+    animation:blink 1.05s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* --- generic grids --- */
+  .grid{display:grid;gap:14px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:860px){.g3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.g3,.g2{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 18px 20px;
+    transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+  .card:hover{border-color:var(--accent-line);transform:translateY(-3px);box-shadow:var(--shadow)}
+
+  /* crew roster */
+  .crew{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:760px){.crew{grid-template-columns:1fr}}
+  .agent{display:flex;gap:13px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);
+    border-radius:11px;padding:15px 16px;transition:border-color .18s ease,transform .18s ease}
+  .agent:hover{border-color:var(--accent-line);transform:translateY(-2px)}
+  .agent .num{font-family:var(--mono);font-size:.72rem;color:var(--accent-ink);padding-top:.2em;
+    font-weight:600;min-width:1.6em}
+  .agent .nm{font-family:var(--mono);font-weight:650;font-size:.92rem;letter-spacing:-.01em}
+  .agent .rl{color:var(--ink-soft);font-size:.86rem;margin-top:3px}
+  .agent .tag{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);
+    padding:2px 7px;border-radius:20px}
+
+  /* workflow loop */
+  .loop-scroll{overflow-x:auto;padding-bottom:6px}
+  .loop{display:flex;align-items:center;gap:10px;min-width:640px;font-family:var(--mono);font-size:.82rem}
+  .node{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 13px;white-space:nowrap}
+  .node.k{border-color:var(--accent-line);color:var(--accent-ink);background:var(--accent-soft)}
+  .arrow{color:var(--ink-faint)}
+  .loop-note{margin-top:16px;color:var(--ink-soft);font-size:.92rem;max-width:60ch}
+
+  /* what's inside */
+  .box .card h3{font-family:var(--mono);font-size:.98rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .box .card p{color:var(--ink-soft);font-size:.88rem}
+  .box .card .stat{font-family:var(--mono);color:var(--accent-ink);font-weight:700}
+  .pill-pro{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#1a1206;
+    background:var(--accent);padding:2px 6px;border-radius:14px;font-weight:700}
+
+  /* pricing */
+  .tiers{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+  @media(max-width:720px){.tiers{grid-template-columns:1fr}}
+  .tier{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 24px;
+    display:flex;flex-direction:column;gap:16px}
+  .tier.feat{border-color:var(--accent-line);box-shadow:var(--shadow);position:relative}
+  .tier.feat::after{content:"BEST VALUE";position:absolute;top:-11px;right:20px;font-family:var(--mono);
+    font-size:.62rem;letter-spacing:.12em;background:var(--accent);color:#1a1206;padding:3px 9px;border-radius:20px;font-weight:700}
+  .tier .tname{font-family:var(--mono);font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+  .tier .price{font-family:var(--mono);font-size:2.5rem;font-weight:700;letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;line-height:1}
+  .tier .price sup{font-size:1.1rem;vertical-align:super;margin-right:1px}
+  .tier .sub{color:var(--ink-faint);font-family:var(--mono);font-size:.76rem}
+  .tier ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .tier li{display:flex;gap:10px;font-size:.9rem;color:var(--ink-soft);align-items:flex-start}
+  .tier li .ck{color:var(--pass);font-family:var(--mono);margin-top:.05em}
+  .tier .btn{justify-content:center;width:100%}
+  .tier .foot{color:var(--ink-faint);font-size:.76rem;text-align:center}
+
+  /* faq */
+  .faq details{border:1px solid var(--line);border-radius:11px;background:var(--surface);margin-bottom:11px;
+    overflow:hidden}
+  .faq summary{cursor:pointer;padding:16px 18px;font-weight:600;font-size:.96rem;list-style:none;
+    display:flex;justify-content:space-between;gap:14px;align-items:center}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .chev{font-family:var(--mono);color:var(--accent-ink);transition:transform .2s ease}
+  .faq details[open] summary .chev{transform:rotate(90deg)}
+  .faq .ans{padding:0 18px 17px;color:var(--ink-soft);font-size:.9rem;max-width:70ch}
+  .faq summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+  /* final cta */
+  .final{text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px}
+  .final h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+  .final .lead{margin:0 auto}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--ink-faint);font-size:.82rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+  footer .mono{font-size:.78rem}
+
+  .ways{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .way{font-family:var(--mono);font-size:.75rem;color:var(--ink-soft);background:var(--surface);
+    border:1px solid var(--line);border-radius:22px;padding:6px 13px}
+  .way b{color:var(--accent-ink);font-weight:650}
+  .adopt-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+  .adopt-steps li{display:flex;gap:11px;font-size:.92rem;color:var(--ink-soft)}
+  .adopt-steps li b{color:var(--ink)}
+  .adopt-steps .n{font-family:var(--mono);color:var(--accent-ink);font-weight:700;min-width:1.5em}
+  .dims{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .dim{font-family:var(--mono);font-size:.71rem;color:var(--ink-soft);background:var(--accent-soft);
+    border:1px solid var(--accent-line);border-radius:7px;padding:5px 9px}
+  .sevs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .sev{font-family:var(--mono);font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:6px}
+  .sev.p0{background:var(--block);color:#fff} .sev.p1{background:var(--accent);color:#1a1206}
+  .sev.p2{background:var(--info);color:#fff} .sev.p3{background:var(--line-2);color:var(--ink)}
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    .reveal{opacity:1;transform:none;transition:none}
+    .reveal-log{opacity:1;transform:none}
+    .caret{animation:none}
+  }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="glyph">⌘</span> ShipCrew</div>
+    <nav>
+      <a class="navlink" href="#crew">Crew</a>
+      <a class="navlink" href="#adopt">Existing repo</a>
+      <a class="navlink" href="#inside">What's inside</a>
+      <a class="navlink" href="#pricing">Pricing</a>
+      <a class="navlink" href="#faq">FAQ</a>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle light and dark theme" title="Toggle theme">◐</button>
+      <a class="btn btn-primary" href="#pricing">Get ShipCrew</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">The senior engineering team for Claude Code</span>
+      <h1>Point Claude Code at the repo you <em>already have.</em></h1>
+      <p class="lead">Its rarest trick: <span class="mono">/adopt</span> runs a deep, <b>read-only audit</b> of the code you already have — security, bugs, architecture, tests — writes a <span class="mono">CLAUDE.md</span> from your real code, and hands you a stabilize-first plan. Then its <b>15-agent crew</b> builds it, on any stack. Every fix is a PR.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#pricing">Get ShipCrew — $39 <span class="price-strike">$59</span></a>
+        <a class="btn btn-ghost" href="#adopt">See /adopt in action ↓</a>
+      </div>
+      <p class="trust">Works with <b>any language or stack</b> &nbsp;·&nbsp; extracted from <b>real production builds</b> &nbsp;·&nbsp; <b>lifetime</b> updates</p>
+      <div class="ways">
+        <span class="way"><b>🔧 Existing repo</b> → audit &amp; de-risk it</span>
+        <span class="way"><b>🌱 New idea</b> → build it from scratch</span>
+      </div>
+    </div>
+    <div class="deck" role="img" aria-label="Terminal showing a ShipCrew /adopt audit of an existing repository">
+      <div class="deck-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">shipcrew — /adopt</span></div>
+      <div class="deck-body" id="boot">
+        <p class="log"><span class="p">$</span> /adopt github.com/acme/app</p>
+        <p class="log"><span class="role">› scanning 214 files · read-only</span></p>
+        <p class="log"><span style="color:var(--block);font-weight:700">⚠ P0</span> <span class="name">security</span> <span class="role">— RLS missing on `users` (PII)</span></p>
+        <p class="log"><span style="color:var(--accent-ink);font-weight:700">⚠ P1</span> <span class="name">tests</span> <span class="role">— checkout path has no coverage</span></p>
+        <p class="log"><span class="role">• P2 perf — N+1 in orders.list()</span></p>
+        <p class="log"><span class="ok">✓</span> <span class="role">CLAUDE.md written from your real stack</span></p>
+        <p class="log"><span class="ok">✓</span> <span class="role">23 issues → Sprint 1: Stabilize &amp; Harden</span></p>
+        <p class="log"><span class="p">›</span> every fix ships as a PR <span class="caret"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">Why it exists</span>
+      <h2>Claude Code is brilliant. Alone, it's one engineer with no process.</h2>
+    </div>
+    <p class="lead" style="max-width:72ch">It forgets your standards, skips the tests, and asks <span class="mono">"what's next?"</span> after every task. ShipCrew gives it what a real team has: <b>specialists that own their domain</b>, <b>skills with the checks baked in</b>, and a <b>delivery loop that never stalls</b> — so the quality doesn't depend on re-deriving it every time.</p>
+  </div>
+</section>
+
+<section class="section" id="crew">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">The roster</span>
+      <h2>11 senior specialists, each wired to the skills it should use</h2>
+      <p class="lead">Every agent is a persona with real judgment and a lane. They hand off to each other — and anything touching auth, data, or payments must clear the security reviewer before it ships.</p>
+    </div>
+    <div class="crew">
+      <div class="agent"><span class="num">01</span><div><div class="nm">tech-lead</div><div class="rl">Decomposes features into atomic, agent-ready issues; sequences the work; curates ADRs.</div></div></div>
+      <div class="agent"><span class="num">02</span><div><div class="nm">sprint-planner</div><div class="rl">Slices the backlog into demoable sprints and runs the continuous-flow delivery loop.</div></div></div>
+      <div class="agent"><span class="num">03</span><div><div class="nm">frontend</div><div class="rl">Next.js / React UI, forms, data display, accessibility, i18n, responsive layouts.</div></div></div>
+      <div class="agent"><span class="num">04</span><div><div class="nm">backend</div><div class="rl">APIs, server actions, domain logic, validation, rate-limiting, background jobs.</div></div></div>
+      <div class="agent"><span class="num">05</span><div><div class="nm">database</div><div class="rl">Schema, migrations, indexes — and row-level security in the same migration.</div></div></div>
+      <div class="agent"><span class="num">06</span><div><div class="nm">security</div><div class="rl">The mandatory reviewer for auth, RLS, roles, payments, PII. The buck stops here.</div><span class="tag">gate</span></div></div>
+      <div class="agent"><span class="num">07</span><div><div class="nm">devops</div><div class="rl">CI/CD, environments, secrets, migrations in CI, observability, backups.</div></div></div>
+      <div class="agent"><span class="num">08</span><div><div class="nm">payments</div><div class="rl">Checkout, webhooks, billing state machines, idempotency, PCI scope.</div></div></div>
+      <div class="agent"><span class="num">09</span><div><div class="nm">ai-integration</div><div class="rl">LLM features, provider abstraction, prompt-injection defense, cost caps.</div></div></div>
+      <div class="agent"><span class="num">10</span><div><div class="nm">qa</div><div class="rl">Unit, e2e, and RLS allow/deny tests — verifies the change actually meets its acceptance.</div></div></div>
+      <div class="agent"><span class="num">11</span><div><div class="nm">ui-ux-designer</div><div class="rl">Design system, tokens, interaction patterns, WCAG, UX flows before implementation.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">The method</span>
+      <h2>A delivery loop that runs itself</h2>
+    </div>
+    <div class="loop-scroll">
+      <div class="loop">
+        <span class="node k">/next</span><span class="arrow">→</span>
+        <span class="node">branch</span><span class="arrow">→</span>
+        <span class="node">implement</span><span class="arrow">→</span>
+        <span class="node">tests</span><span class="arrow">→</span>
+        <span class="node">PR · Closes #NN</span><span class="arrow">→</span>
+        <span class="node">CI + security review</span><span class="arrow">→</span>
+        <span class="node">merge</span><span class="arrow">→</span>
+        <span class="node k">/sprint-review</span><span class="arrow">↺</span>
+      </div>
+    </div>
+    <p class="loop-note">Throughput-based, <b>never time-boxed</b>: the moment a sprint's Definition of Done passes, the next one starts — no waiting for a date. Two or three sprints can finish in a day. <span class="mono">/standup</span> tells you what shipped, what's in progress, and what's next.</p>
+  </div>
+</section>
+
+<section class="section box" id="inside">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">In the box</span>
+      <h2>Everything you need — nothing to wire up</h2>
+    </div>
+    <div class="grid g3">
+      <div class="card"><h3><span class="stat">15</span> agents</h3><p>Senior specialists with judgment and clear lanes, each pointed at the right skills.</p></div>
+      <div class="card"><h3><span class="stat">28</span> skills</h3><p>Verification-first playbooks — <span class="mono">rls-policy</span>, <span class="mono">api-endpoint</span>, <span class="mono">webhook-handler</span>, <span class="mono">security-review</span>, <span class="mono">write-tests</span> — with the checks baked in.</p></div>
+      <div class="card"><h3>One-command board</h3><p>A script turns a CSV into a full GitHub board: labels, milestones, issues, a Sprint field, and every issue placed in its column.</p></div>
+      <div class="card"><h3>Sprint system</h3><p><span class="mono">/kickoff · /next · /sprint-review · /standup</span> — continuous-flow delivery so agents always know what's next.</p></div>
+      <div class="card"><h3>Security guardrails</h3><p>3-layer secret-leak protection (pre-commit hook + CI scan + config) and a mandatory review gate for sensitive changes.</p></div>
+      <div class="card"><h3>Living docs</h3><p>Templates for architecture, ADRs, security model, coding standards, testing strategy, and a Definition of Done.</p></div>
+      <div class="card"><h3><span class="pill-pro">Pro</span> Next.js + Supabase</h3><p>A production boilerplate: auth, RLS, Stripe payments, EN/FR i18n, transactional email — wired and tested.</p></div>
+      <div class="card"><h3><span class="pill-pro">Pro</span> Design system</h3><p>Tokens, components, and a mobile-first, accessible aesthetic you can rebrand in minutes.</p></div>
+      <div class="card"><h3>Any stack</h3><p>Core is language-agnostic — the agents, skills, and workflow drop into a Python, Go, Rails, or Node repo just the same.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="adopt">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">Greenfield or brownfield</span>
+      <h2>Already have a project? Adopt it.</h2>
+      <p class="lead">Most kits only help you start over. ShipCrew drops into the repo you already have and gives you a deep, multi-agent audit — then a plan to fix it. Three ways in, your choice.</p>
+    </div>
+    <div class="grid g2" style="align-items:start;gap:22px">
+      <div class="deck">
+        <div class="deck-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">adopt — any of 3 ways</span></div>
+        <div class="deck-body" style="min-height:auto">
+          <p class="log"><span class="role"># 1 · in place</span></p>
+          <p class="log"><span class="p">$</span> ./install.sh . &amp;&amp; claude</p>
+          <p class="log"><span class="p">›</span> /adopt</p>
+          <p class="log">&nbsp;</p>
+          <p class="log"><span class="role"># 2 · from a git URL</span></p>
+          <p class="log"><span class="p">›</span> /adopt https://github.com/you/repo</p>
+          <p class="log">&nbsp;</p>
+          <p class="log"><span class="role"># 3 · a local folder</span></p>
+          <p class="log"><span class="p">›</span> /adopt ../some/path</p>
+        </div>
+      </div>
+      <div>
+        <ul class="adopt-steps">
+          <li><span class="n">1</span><div><b>Deep audit, adversarially verified.</b> Security, bugs, architecture, data, tests, perf, a11y, ops — every finding checked by a second agent, then severity-ranked.</div></li>
+          <li><span class="n">2</span><div><b>A CLAUDE.md from your real code</b> — your actual stack and conventions, not a generic ideal.</div></li>
+          <li><span class="n">3</span><div><b>A stabilize-first backlog.</b> Sprint 1 hardens what's shaky <em>before</em> new features — with a test net first.</div></li>
+          <li><span class="n">4</span><div><b>Your board, filled</b> — remediation and feature issues, prioritized and sprinted, in one command.</div></li>
+        </ul>
+        <div class="sevs"><span class="sev p0">P0</span><span class="sev p1">P1</span><span class="sev p2">P2</span><span class="sev p3">P3</span></div>
+        <div class="dims"><span class="dim">security</span><span class="dim">correctness</span><span class="dim">architecture</span><span class="dim">data model</span><span class="dim">tests</span><span class="dim">performance</span><span class="dim">a11y · i18n</span><span class="dim">CI · ops</span></div>
+        <p class="trust" style="margin-top:18px">Read-only audit · every fix is a <b>PR</b>, never a rewrite · your <b>no-go zones</b> stay untouched.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="wrap reveal">
+    <div class="kicker-row">
+      <span class="eyebrow">Pricing · early-bird for the first 100</span>
+      <h2>One payment. Yours forever.</h2>
+      <p class="lead">Lifetime access and updates. 14-day no-questions refund.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tname">Core</div>
+        <div><span class="price"><sup>$</sup>39</span> <span class="price-strike">$59</span></div>
+        <div class="sub">the .claude/ kit · any stack</div>
+        <ul>
+          <li><span class="ck">✓</span> 11 specialist agents</li>
+          <li><span class="ck">✓</span> 21 verification-first skills</li>
+          <li><span class="ck">✓</span> Continuous-flow sprint system</li>
+          <li><span class="ck">✓</span> One-command GitHub board</li>
+          <li><span class="ck">✓</span> 3-layer secret-leak protection</li>
+          <li><span class="ck">✓</span> Living docs templates</li>
+          <li><span class="ck">✓</span> Lifetime updates · 1 developer</li>
+        </ul>
+        <a class="btn btn-ghost" href="#" data-buy="core">Get Core</a>
+        <div class="foot">Instant download · private repo access</div>
+      </div>
+      <div class="tier feat">
+        <div class="tname">Pro</div>
+        <div><span class="price"><sup>$</sup>99</span> <span class="price-strike">$149</span></div>
+        <div class="sub">Core + the full production starter</div>
+        <ul>
+          <li><span class="ck">✓</span> <b>Everything in Core</b></li>
+          <li><span class="ck">✓</span> Next.js 15 + Supabase boilerplate</li>
+          <li><span class="ck">✓</span> Auth · RLS · Stripe · i18n · email</li>
+          <li><span class="ck">✓</span> Rebrandable design system</li>
+          <li><span class="ck">✓</span> Filled reference docs + ADRs</li>
+          <li><span class="ck">✓</span> Lifetime updates · unlimited projects</li>
+        </ul>
+        <a class="btn btn-primary" href="#" data-buy="pro">Get Pro</a>
+        <div class="foot">Ship your next SaaS this weekend</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="wrap reveal" style="max-width:820px;margin-inline:auto">
+    <div class="kicker-row"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
+    <div class="faq">
+      <details open><summary>Does it work with my stack? <span class="chev">›</span></summary><div class="ans">Yes. <b>Core</b> is stack-agnostic — the agents, skills, and delivery loop work in any language or framework. <b>Pro</b> adds a ready-made Next.js 15 + Supabase starter if you want a head start.</div></details>
+      <details><summary>I already have a codebase — can I use this? <span class="chev">›</span></summary><div class="ans">Yes — that's <b>ShipCrew's superpower</b>. Point <span class="mono">/adopt</span> at your existing repo (in place, a git URL, or a local folder) and it runs a deep, severity-ranked audit, writes a <span class="mono">CLAUDE.md</span> from your real code, and hands you a stabilize-first sprint plan + board. The audit is read-only; every fix lands as a PR.</div></details>
+      <details><summary>Is this just a folder of prompts? <span class="chev">›</span></summary><div class="ans">No. It's a <b>system</b>: agents with real judgment and clear ownership, skills with verification steps built in, a sprint board that runs itself, and security gates. The quality is in the process, not a single clever prompt.</div></details>
+      <details><summary>How is it delivered? <span class="chev">›</span></summary><div class="ans">After checkout you get a license key and access to a private GitHub repo. Clone it, or copy the <span class="mono">.claude/</span> directory into your existing project — you're running in minutes.</div></details>
+      <details><summary>Do I need Supabase or Next.js? <span class="chev">›</span></summary><div class="ans">Not for Core. Those only matter for the optional Pro boilerplate. The agents and workflow are happy in a Python, Go, Rails, or plain-Node repo.</div></details>
+      <details><summary>Updates and refunds? <span class="chev">›</span></summary><div class="ans">Lifetime updates are included — buy once, keep getting improvements. If it's not for you, a <b>14-day no-questions refund</b> has you covered.</div></details>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap reveal final">
+    <span class="eyebrow">Ship like a team of ten</span>
+    <h2>Your next repo deserves a crew.</h2>
+    <p class="lead">Stop re-teaching Claude Code your standards on every project. Give it ShipCrew once.</p>
+    <a class="btn btn-primary" href="#pricing" style="font-size:1rem;padding:.85em 1.5em">Get ShipCrew — $39 <span class="price-strike">$59</span></a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><span class="glyph">⌘</span> ShipCrew</div>
+    <span class="mono">Built by a developer who ships · Prices in USD, billed securely by Lemon&nbsp;Squeezy.</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    // theme toggle — stamps data-theme so it wins over prefers-color-scheme
+    var root=document.documentElement, btn=document.getElementById('themeToggle');
+    function current(){ var t=root.getAttribute('data-theme'); if(t) return t;
+      return window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'; }
+    btn && btn.addEventListener('click',function(){
+      var next=current()==='dark'?'light':'dark'; root.setAttribute('data-theme',next); });
+
+    // staggered boot log
+    var logs=document.querySelectorAll('#boot .log');
+    var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(!reduce){ logs.forEach(function(el,i){ el.classList.add('reveal-log');
+      el.style.animationDelay=(i*0.28)+'s'; }); }
+
+    // scroll reveal
+    if(!reduce && 'IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },
+        {threshold:0.12});
+      document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+    } else { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+    // smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click',function(ev){ var id=a.getAttribute('href'); if(id.length<2) return;
+        var t=document.querySelector(id); if(t){ ev.preventDefault(); t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); } });
+    });
+  })();
+</script>
+
+</body>
+</html>
