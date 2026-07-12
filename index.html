@@ -4,42 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vantry — a senior vantage over any codebase</title>
-<meta name="description" content="Vantry gives your AI coding agent a senior vantage over your repo: /adopt surveys the code you already have, maps every finding, and hands you a plan. Then its crew builds what's next — on any stack.">
+<meta name="description" content="One kit, any AI agent. Vantry gives Claude Code, Codex, Cursor, Copilot & more a senior vantage over your repo: /adopt surveys the code you already have, maps every finding, and hands you a plan — then its crew ships, on any stack.">
 <style>
   :root{
-    --ground:#eef1f6; --ground-2:#e7ebf1; --surface:#ffffff; --surface-2:#f4f6f9;
-    --line:#d5dce5; --line-2:#c3ccd8; --ink:#111820; --soft:#4d5867; --faint:#7c8794;
-    --accent:#e0492f; --accent-ink:#c33e28; --accent-soft:rgba(224,73,47,.09); --accent-line:rgba(224,73,47,.28);
-    --p0:#e0492f; --p1:#b7791b; --p2:#3f72c4; --ok:#2f9066;
+    --ground:#f2eee4; --ground-2:#ebe6da; --surface:#fbf9f4; --surface-2:#f4f0e6;
+    --line:#ddd6c7; --line-2:#cbc3b1; --ink:#211d16; --soft:#5f574a; --faint:#8a8172;
+    --accent:#5f7a45; --accent-ink:#4c6338; --accent-soft:rgba(95,122,69,.10); --accent-line:rgba(95,122,69,.30);
+    --p0:#b8452f; --p1:#a9741a; --p2:#4a6b8a; --ok:#4f7a3f;
+    --terr-line:33,29,22; --terr-glow:95,122,69;
     --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
     --sans:-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --shadow:0 1px 2px rgba(17,24,32,.05), 0 20px 44px -26px rgba(17,24,32,.32);
+    --shadow:0 1px 2px rgba(33,29,22,.06), 0 22px 46px -28px rgba(33,29,22,.3);
     --maxw:1080px;
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --ground:#080b10; --ground-2:#0b1017; --surface:#111823; --surface-2:#18202c;
-      --line:#222c39; --line-2:#2e3b4b; --ink:#eaeef4; --soft:#9caab9; --faint:#606d7c;
-      --accent:#f55b43; --accent-ink:#ff7c66; --accent-soft:rgba(245,91,67,.13); --accent-line:rgba(245,91,67,.3);
-      --p0:#f55b43; --p1:#e0a53a; --p2:#5b9bd8; --ok:#4fbb8b;
-      --shadow:0 1px 2px rgba(0,0,0,.4), 0 26px 54px -28px rgba(0,0,0,.75);
+      --ground:#14120d; --ground-2:#17140f; --surface:#1c1913; --surface-2:#221e17;
+      --line:#2e2a21; --line-2:#3a3529; --ink:#ece7dd; --soft:#a89e8c; --faint:#6e6656;
+      --accent:#93b56e; --accent-ink:#aecb86; --accent-soft:rgba(147,181,110,.14); --accent-line:rgba(147,181,110,.30);
+      --p0:#e0674a; --p1:#d9a441; --p2:#7fa4c8; --ok:#86b06a;
+      --terr-line:150,140,120; --terr-glow:174,203,134;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 26px 54px -28px rgba(0,0,0,.7);
     }
   }
-  :root[data-theme="light"]{--ground:#eef1f6;--ground-2:#e7ebf1;--surface:#fff;--surface-2:#f4f6f9;--line:#d5dce5;--line-2:#c3ccd8;--ink:#111820;--soft:#4d5867;--faint:#7c8794;--accent:#e0492f;--accent-ink:#c33e28;--accent-soft:rgba(224,73,47,.09);--accent-line:rgba(224,73,47,.28);--p0:#e0492f;--p1:#b7791b;--p2:#3f72c4;--ok:#2f9066;--shadow:0 1px 2px rgba(17,24,32,.05),0 20px 44px -26px rgba(17,24,32,.32);}
-  :root[data-theme="dark"]{--ground:#080b10;--ground-2:#0b1017;--surface:#111823;--surface-2:#18202c;--line:#222c39;--line-2:#2e3b4b;--ink:#eaeef4;--soft:#9caab9;--faint:#606d7c;--accent:#f55b43;--accent-ink:#ff7c66;--accent-soft:rgba(245,91,67,.13);--accent-line:rgba(245,91,67,.3);--p0:#f55b43;--p1:#e0a53a;--p2:#5b9bd8;--ok:#4fbb8b;--shadow:0 1px 2px rgba(0,0,0,.4),0 26px 54px -28px rgba(0,0,0,.75);}
+  :root[data-theme="light"]{--ground:#f2eee4;--ground-2:#ebe6da;--surface:#fbf9f4;--surface-2:#f4f0e6;--line:#ddd6c7;--line-2:#cbc3b1;--ink:#211d16;--soft:#5f574a;--faint:#8a8172;--accent:#5f7a45;--accent-ink:#4c6338;--accent-soft:rgba(95,122,69,.10);--accent-line:rgba(95,122,69,.30);--p0:#b8452f;--p1:#a9741a;--p2:#4a6b8a;--ok:#4f7a3f;--terr-line:33,29,22;--terr-glow:95,122,69;--shadow:0 1px 2px rgba(33,29,22,.06),0 22px 46px -28px rgba(33,29,22,.3);}
+  :root[data-theme="dark"]{--ground:#14120d;--ground-2:#17140f;--surface:#1c1913;--surface-2:#221e17;--line:#2e2a21;--line-2:#3a3529;--ink:#ece7dd;--soft:#a89e8c;--faint:#6e6656;--accent:#93b56e;--accent-ink:#aecb86;--accent-soft:rgba(147,181,110,.14);--accent-line:rgba(147,181,110,.30);--p0:#e0674a;--p1:#d9a441;--p2:#7fa4c8;--ok:#86b06a;--terr-line:150,140,120;--terr-glow:174,203,134;--shadow:0 1px 2px rgba(0,0,0,.4),0 26px 54px -28px rgba(0,0,0,.7);}
   *{box-sizing:border-box}
   body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background .3s,color .3s;overflow-x:hidden}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   h1,h2,h3{margin:0;letter-spacing:-.025em;text-wrap:balance;font-weight:800}
   p{margin:0}
   .mono{font-family:var(--mono)}
-  .eyebrow{font-family:var(--mono);text-transform:uppercase;font-size:.7rem;letter-spacing:.22em;color:var(--accent-ink);font-weight:600}
+  .eyebrow{font-family:var(--mono);text-transform:uppercase;font-size:.7rem;letter-spacing:.2em;color:var(--accent-ink);font-weight:600}
   a{color:inherit}
   .btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--mono);font-size:.9rem;font-weight:600;padding:.72em 1.2em;border-radius:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;transition:transform .14s ease,background .18s,border-color .18s,box-shadow .18s}
   .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px -8px var(--accent)}
+  .btn-primary{background:var(--accent);color:#fbf9f4;box-shadow:0 10px 26px -10px var(--accent)}
   .btn-primary:hover{transform:translateY(-2px)}
-  .btn-primary::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);transition:left .55s ease}
+  .btn-primary::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);transition:left .55s ease}
   .btn-primary:hover::after{left:130%}
   .btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent-ink);transform:translateY(-2px)}
@@ -48,10 +50,10 @@
   .mark{display:inline-flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.03em;font-size:1.12rem}
   .mark svg{width:22px;height:22px;display:block;overflow:visible}
   .peak-fill{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
-  .mark svg .scan{stroke:var(--accent-ink);stroke-width:2.4;stroke-dasharray:26;stroke-dashoffset:26;animation:draw 3.4s ease-in-out infinite}
+  .mark svg .scan{stroke:var(--accent-ink);stroke-width:2.4;stroke-dasharray:26;stroke-dashoffset:26;animation:draw 3.6s ease-in-out infinite;stroke-linejoin:round;stroke-linecap:round;fill:none}
   @keyframes draw{0%{stroke-dashoffset:26}45%{stroke-dashoffset:0}75%{stroke-dashoffset:0}100%{stroke-dashoffset:-26}}
 
-  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 84%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
   .top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
   .top nav{display:flex;align-items:center;gap:22px}
   .top nav a.navlink{font-family:var(--mono);font-size:.82rem;color:var(--soft);text-decoration:none}
@@ -59,42 +61,29 @@
   .icon-btn{background:transparent;border:1px solid var(--line-2);color:var(--soft);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:.95rem}
   .icon-btn:hover{color:var(--accent-ink);border-color:var(--accent)}
   .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  @media(max-width:760px){.top nav .navlink{display:none}}
+  @media(max-width:820px){.top nav .navlink{display:none}}
 
-  .hero{position:relative;overflow:hidden;min-height:clamp(560px,78vh,760px);display:flex;align-items:center}
+  .hero{position:relative;overflow:hidden;min-height:clamp(600px,86vh,820px);display:flex;align-items:center}
   #terrain{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block}
   .hero-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(120% 120% at 78% 42%, transparent 0%, transparent 34%, var(--ground) 78%),
-               linear-gradient(90deg, var(--ground) 12%, color-mix(in srgb,var(--ground) 55%,transparent) 42%, transparent 66%)}
-  .hero .wrap{position:relative;z-index:2;width:100%;padding:clamp(46px,7vw,88px) 24px;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,48px);align-items:center}
-  @media(max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:30px}.hero-fade{background:linear-gradient(180deg,color-mix(in srgb,var(--ground) 40%,transparent),var(--ground) 82%)}}
-  .hero h1{font-size:clamp(2.5rem,6vw,4.3rem);line-height:1.0;margin:18px 0 20px}
+    background:linear-gradient(90deg, var(--ground) 6%, color-mix(in srgb,var(--ground) 62%,transparent) 40%, transparent 62%)}
+  @media(max-width:900px){.hero-fade{background:linear-gradient(180deg,color-mix(in srgb,var(--ground) 30%,transparent),var(--ground) 84%)}}
+  .hero .wrap{position:relative;z-index:2;width:100%;padding:clamp(44px,7vw,84px) 24px}
+  .hero .col{max-width:600px}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,4.6rem);line-height:.98;margin:16px 0 20px}
   .hero h1 em{font-style:normal;color:var(--accent-ink)}
-  .lead{color:var(--soft);font-size:1.08rem;max-width:52ch}
+  .lead{color:var(--soft);font-size:1.1rem;max-width:50ch}
   .lead b{color:var(--ink)} .lead code{font-family:var(--mono);font-size:.9em;color:var(--accent-ink);background:var(--accent-soft);padding:1px 5px;border-radius:4px}
-  .cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 16px}
-  .trust{font-family:var(--mono);font-size:.75rem;color:var(--faint);line-height:1.9}
-  .trust b{color:var(--soft);font-weight:600}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 22px}
+  .agents{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-family:var(--mono);font-size:.78rem;color:var(--soft)}
+  .agents .lbl{color:var(--faint);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+  .agents .a{display:inline-flex;align-items:center;gap:6px}
+  .agents .a::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
 
-  /* choreographed hero entrance */
   .rise{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
   body.loaded .rise{opacity:1;transform:none}
-  body.loaded .d1{transition-delay:.05s} body.loaded .d2{transition-delay:.13s} body.loaded .d3{transition-delay:.21s}
-  body.loaded .d4{transition-delay:.29s} body.loaded .d5{transition-delay:.4s}
-
-  .survey{background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(6px)}
-  .survey-top{display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface-2) 80%,transparent);font-family:var(--mono);font-size:.74rem;color:var(--faint);flex-wrap:wrap}
-  .survey-top .coord{margin-left:auto;letter-spacing:.04em}
-  .survey-body{padding:8px 16px 12px}
-  .srow{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px dashed var(--line);font-family:var(--mono);font-size:.8rem;opacity:0;transform:translateX(-8px);animation:sIn .5s ease forwards}
-  .srow:last-child{border-bottom:none}
-  @keyframes sIn{to{opacity:1;transform:none}}
-  .flag{font-weight:700;font-size:.66rem;padding:2px 7px;border-radius:5px;color:#fff;flex:none;min-width:26px;text-align:center}
-  .flag.p0{background:var(--p0);box-shadow:0 0 0 0 var(--p0);animation:pulse 2.4s ease-out infinite}
-  .flag.p1{background:var(--p1)} .flag.p2{background:var(--p2)}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--p0) 60%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
-  .srow .what{color:var(--ink)} .srow .loc{color:var(--faint);margin-left:auto;white-space:nowrap}
-  .survey-foot{padding:11px 16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ok);display:flex;align-items:center;gap:8px}
+  body.loaded .d1{transition-delay:.05s} body.loaded .d2{transition-delay:.13s} body.loaded .d3{transition-delay:.22s}
+  body.loaded .d4{transition-delay:.32s} body.loaded .d5{transition-delay:.42s}
 
   section{padding:clamp(50px,8vw,96px) 0;border-top:1px solid var(--line)}
   section.alt{background:var(--ground-2)}
@@ -102,9 +91,20 @@
   .kick h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
   .kick .lead{max-width:70ch}
 
+  .survey{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;max-width:560px}
+  .survey-top{display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line);background:var(--surface-2);font-family:var(--mono);font-size:.74rem;color:var(--faint);flex-wrap:wrap}
+  .survey-top .coord{margin-left:auto;letter-spacing:.04em}
+  .survey-body{padding:6px 16px 10px}
+  .srow{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px dashed var(--line);font-family:var(--mono);font-size:.82rem}
+  .srow:last-child{border-bottom:none}
+  .flag{font-weight:700;font-size:.66rem;padding:2px 7px;border-radius:5px;color:#fbf9f4;flex:none;min-width:26px;text-align:center}
+  .flag.p0{background:var(--p0)} .flag.p1{background:var(--p1)} .flag.p2{background:var(--p2)}
+  .srow .what{color:var(--ink)} .srow .loc{color:var(--faint);margin-left:auto;white-space:nowrap}
+  .survey-foot{padding:11px 16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ok);display:flex;align-items:center;gap:8px}
+
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:820px){.steps{grid-template-columns:1fr}}
-  .step{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:22px 20px;position:relative;transition:border-color .2s,transform .2s,box-shadow .2s}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:22px 20px;transition:border-color .2s,transform .2s,box-shadow .2s}
   .step:hover{border-color:var(--accent-line);transform:translateY(-4px);box-shadow:var(--shadow)}
   .step .n{font-family:var(--mono);font-size:.72rem;color:var(--accent-ink);font-weight:700;letter-spacing:.1em}
   .step h3{font-size:1.15rem;margin:10px 0 8px;font-weight:750}
@@ -125,7 +125,7 @@
   .tier{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 24px;display:flex;flex-direction:column;gap:15px;transition:transform .2s,box-shadow .2s}
   .tier.feat{border-color:var(--accent-line);box-shadow:var(--shadow);position:relative}
   .tier.feat:hover{transform:translateY(-4px)}
-  .tier.feat::after{content:"START HERE";position:absolute;top:-11px;right:20px;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;background:var(--accent);color:#fff;padding:3px 9px;border-radius:20px;font-weight:700}
+  .tier.feat::after{content:"START HERE";position:absolute;top:-11px;right:20px;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;background:var(--accent);color:#fbf9f4;padding:3px 9px;border-radius:20px;font-weight:700}
   .tier .tn{font-family:var(--mono);font-weight:800;font-size:1.05rem}
   .tier .price{font-family:var(--mono);font-size:2.5rem;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
   .tier .price sup{font-size:1.05rem;vertical-align:super;margin-right:1px}
@@ -151,7 +151,7 @@
 
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
   .reveal.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){.reveal,.rise{opacity:1!important;transform:none!important;transition:none!important}.srow{opacity:1;transform:none;animation:none}.flag.p0{animation:none}.mark svg .scan{animation:none;stroke-dashoffset:0}}
+  @media(prefers-reduced-motion:reduce){.reveal,.rise{opacity:1!important;transform:none!important;transition:none!important}.mark svg .scan{animation:none;stroke-dashoffset:0}}
 </style>
 </head>
 <body>
@@ -174,25 +174,18 @@
   <canvas id="terrain" aria-hidden="true"></canvas>
   <div class="hero-fade"></div>
   <div class="wrap">
-    <div>
-      <span class="eyebrow rise d1">A Claude Code &amp; any-agent kit · survey, then ship</span>
+    <div class="col">
+      <span class="eyebrow rise d1">One kit · any AI agent · survey, then ship</span>
       <h1 class="rise d2">See what your <em>codebase hides.</em></h1>
-      <p class="lead rise d3">Vantry gives your AI coding agent a <b>senior vantage</b> over your repo. <code>/adopt</code> surveys the code you already have — security, bugs, architecture, tests — maps every finding to a plan, then its crew builds what's next. <b>On any stack. Every fix is a PR.</b></p>
+      <p class="lead rise d3">Vantry gives <b>any AI coding agent</b> a senior vantage over your repo. <code>/adopt</code> surveys the code you already have — security, bugs, architecture, tests — maps every finding to a plan, then its crew builds what's next. <b>On any stack. Every fix is a PR.</b></p>
       <div class="cta rise d4">
         <a class="btn btn-primary" href="https://2iid.gumroad.com/l/shipcrew" target="_blank" rel="noopener">Get Vantry — $39 <span class="strike">$59</span></a>
         <a class="btn btn-ghost" href="#survey">See a survey ↓</a>
       </div>
-      <p class="trust rise d5">Works with <b>Claude Code, Codex, Cursor, Copilot &amp; more</b> &nbsp;·&nbsp; extracted from <b>real production builds</b> &nbsp;·&nbsp; <b>lifetime</b> updates</p>
-    </div>
-    <div class="survey rise d4" role="img" aria-label="A Vantry survey of a repository, with findings plotted by severity">
-      <div class="survey-top"><span class="mono">vantry · survey</span><span>github.com/acme/app</span><span class="coord">▲ 214 files · read-only</span></div>
-      <div class="survey-body">
-        <div class="srow" style="animation-delay:.5s"><span class="flag p0">P0</span><span class="what">RLS missing on `users` (PII)</span><span class="loc">db/users.sql:14</span></div>
-        <div class="srow" style="animation-delay:.7s"><span class="flag p1">P1</span><span class="what">checkout path uncovered</span><span class="loc">api/checkout.ts</span></div>
-        <div class="srow" style="animation-delay:.9s"><span class="flag p2">P2</span><span class="what">N+1 in orders.list()</span><span class="loc">svc/orders.ts:52</span></div>
-        <div class="srow" style="animation-delay:1.1s"><span class="flag p2">P2</span><span class="what">hardcoded strings (no i18n)</span><span class="loc">ui/Cart.tsx</span></div>
+      <div class="agents rise d5">
+        <span class="lbl">Works with</span>
+        <span class="a">Claude Code</span><span class="a">Codex</span><span class="a">Cursor</span><span class="a">Copilot</span><span class="a">Gemini</span><span class="a">Windsurf</span>
       </div>
-      <div class="survey-foot">✓ CLAUDE.md written · 23 issues → Sprint&nbsp;1: Stabilize &amp; Harden</div>
     </div>
   </div>
 </section>
@@ -200,9 +193,9 @@
 <section class="alt">
   <div class="wrap reveal">
     <div class="kick">
-      <span class="eyebrow">Why a vantage</span>
-      <h2>Your AI codes fast — but it's standing in the weeds.</h2>
-      <p class="lead">From ground level it can't see the missing test, the exposed table, the architecture drifting off-course. Vantry lifts it to a <b>senior vantage point</b>: it surveys the whole terrain first, marks what's dangerous, and only then starts building — with the discipline of a team that's shipped for real.</p>
+      <span class="eyebrow">Whatever agent you run</span>
+      <h2>One method. Every tool. Same senior discipline.</h2>
+      <p class="lead">Vantry is built on the open <span class="mono">AGENTS.md</span> standard, so the crew, the playbooks, and the survey work in <b>Claude Code, Codex, Cursor, Copilot, Gemini CLI &amp; more</b> — fullest on Claude Code, real everywhere. Switch tools, keep the method.</p>
     </div>
   </div>
 </section>
@@ -212,12 +205,22 @@
     <div class="kick">
       <span class="eyebrow">The survey · <span class="mono">/adopt</span></span>
       <h2>Point it at the repo you already have.</h2>
-      <p class="lead">Vantry's signature move. A deep, <b>read-only</b> survey of your existing code — nothing is changed until you approve.</p>
+      <p class="lead">Vantry's signature move: a deep, <b>read-only</b> survey of your existing code — nothing changes until you approve.</p>
     </div>
-    <div class="steps">
-      <div class="step"><div class="n">01 · SURVEY</div><h3>Map the terrain</h3><p>Security, bugs, architecture, data model, tests, performance, a11y — every finding ranked P0–P3, each with its file, impact, and a fix. Adversarially verified, so false alarms don't reach you.</p><span class="cmd">/adopt audit</span></div>
-      <div class="step"><div class="n">02 · ANCHOR</div><h3>A map from your real code</h3><p>Vantry writes a <span class="mono">CLAUDE.md</span> (or <span class="mono">AGENTS.md</span>) from what's actually there — your stack, your conventions — not a generic ideal. Now every agent works from the same map.</p><span class="cmd">stack + conventions, captured</span></div>
-      <div class="step"><div class="n">03 · SHIP</div><h3>Stabilize, then build</h3><p>The findings become an atomic backlog. Sprint 1 hardens what's shaky — <b>before</b> new features — with a test net first. Then the crew ships, on any stack. Every change is a PR.</p><span class="cmd">/next → PR → review</span></div>
+    <div class="survey" role="img" aria-label="A Vantry survey of a repository, findings plotted by severity">
+      <div class="survey-top"><span class="mono">vantry · survey</span><span>github.com/acme/app</span><span class="coord">▲ 214 files · read-only</span></div>
+      <div class="survey-body">
+        <div class="srow"><span class="flag p0">P0</span><span class="what">RLS missing on `users` (PII)</span><span class="loc">db/users.sql:14</span></div>
+        <div class="srow"><span class="flag p1">P1</span><span class="what">checkout path uncovered</span><span class="loc">api/checkout.ts</span></div>
+        <div class="srow"><span class="flag p2">P2</span><span class="what">N+1 in orders.list()</span><span class="loc">svc/orders.ts:52</span></div>
+        <div class="srow"><span class="flag p2">P2</span><span class="what">hardcoded strings (no i18n)</span><span class="loc">ui/Cart.tsx</span></div>
+      </div>
+      <div class="survey-foot">✓ CLAUDE.md written · 23 issues → Sprint 1: Stabilize &amp; Harden</div>
+    </div>
+    <div class="steps" style="margin-top:22px">
+      <div class="step"><div class="n">01 · SURVEY</div><h3>Map the terrain</h3><p>Every finding ranked P0–P3, each with its file, impact, and a fix. Adversarially verified, so false alarms don't reach you.</p><span class="cmd">/adopt audit</span></div>
+      <div class="step"><div class="n">02 · ANCHOR</div><h3>A map from your real code</h3><p>Vantry writes a <span class="mono">CLAUDE.md</span> / <span class="mono">AGENTS.md</span> from what's actually there — your stack, your conventions. Every agent now shares the map.</p><span class="cmd">stack + conventions, captured</span></div>
+      <div class="step"><div class="n">03 · SHIP</div><h3>Stabilize, then build</h3><p>The findings become an atomic backlog. Sprint 1 hardens what's shaky — <b>before</b> new features. Then the crew ships. Every change is a PR.</p><span class="cmd">/next → PR → review</span></div>
     </div>
   </div>
 </section>
@@ -229,7 +232,7 @@
       <div class="card"><h3><span class="stat" data-count="15">0</span> agents</h3><p>Specialist roles — security, backend, frontend, database, QA, devops, product, growth — each with judgment and a lane.</p></div>
       <div class="card"><h3><span class="stat" data-count="29">0</span> skills</h3><p>Verification-first playbooks (RLS, APIs, webhooks, security review, tests) with the checks baked in — quality that doesn't depend on luck.</p></div>
       <div class="card"><h3>The <span class="mono">/adopt</span> survey</h3><p>The read-only audit → CLAUDE.md → a stabilize-first backlog. The rarest, highest-value move in the kit.</p></div>
-      <div class="card"><h3>Any agent, any stack</h3><p>Built on the <span class="mono">AGENTS.md</span> standard — fullest on Claude Code, and it drops into Codex, Cursor, Copilot &amp; more. Web, mobile, game, data, embedded.</p></div>
+      <div class="card"><h3>Any agent, any stack</h3><p>On the <span class="mono">AGENTS.md</span> standard — Claude Code, Codex, Cursor, Copilot, Gemini &amp; more. Web, mobile, game, data, embedded.</p></div>
       <div class="card"><h3>Runs itself</h3><p>A continuous-flow sprint board from one command — labels, milestones, issues, sprints — so agents always know what's next.</p></div>
       <div class="card"><h3>Guardrails</h3><p>A mandatory security review gate, 3-layer secret-leak protection, and an <b>originality check</b> so what you ship is never a clone.</p></div>
     </div>
@@ -261,7 +264,7 @@
           <li><span class="ck">✓</span> The <span class="mono">/adopt</span> survey (audit → plan)</li>
           <li><span class="ck">✓</span> Continuous-flow sprint board</li>
           <li><span class="ck">✓</span> Security + secret-leak + originality guardrails</li>
-          <li><span class="ck">✓</span> Works with Claude Code, Codex, Cursor, Copilot…</li>
+          <li><span class="ck">✓</span> Claude Code, Codex, Cursor, Copilot, Gemini…</li>
           <li><span class="ck">✓</span> Lifetime updates · 1 developer</li>
         </ul>
         <a class="btn btn-primary" href="https://2iid.gumroad.com/l/shipcrew" target="_blank" rel="noopener">Get Core — $39</a>
@@ -288,8 +291,8 @@
   <div class="wrap reveal" style="max-width:820px;margin-inline:auto">
     <div class="kick"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
     <div class="faq">
-      <details open><summary>What exactly is Vantry? <span class="chev">›</span></summary><div class="ans">A drop-in kit that gives your AI coding agent a senior engineering crew, verification-first playbooks, and its signature <code>/adopt</code> survey — a read-only audit of an existing repo that becomes a stabilize-first plan. Extracted from real production builds.</div></details>
-      <details><summary>Do I need Claude Code? <span class="chev">›</span></summary><div class="ans">No. Vantry is built on the <code>AGENTS.md</code> open standard, so it works with Codex, Cursor, Copilot, Gemini CLI &amp; more. Claude Code gets the fullest experience (native sub-agents + auto-invoked skills), but you get the whole method on any agent.</div></details>
+      <details open><summary>Do I need Claude Code? <span class="chev">›</span></summary><div class="ans">No. Vantry is built on the <code>AGENTS.md</code> open standard, so it works with Codex, Cursor, Copilot, Gemini CLI &amp; more. Claude Code gets the fullest experience (native sub-agents + auto-invoked skills), but you get the whole method on any agent.</div></details>
+      <details><summary>What exactly is Vantry? <span class="chev">›</span></summary><div class="ans">A drop-in kit that gives your AI coding agent a senior engineering crew, verification-first playbooks, and its signature <code>/adopt</code> survey — a read-only audit of an existing repo that becomes a stabilize-first plan. Extracted from real production builds.</div></details>
       <details><summary>Will the survey change my code? <span class="chev">›</span></summary><div class="ans">No — <code>/adopt</code> is <b>read-only</b>. It produces a report and a plan. Every fix afterward lands as a PR, never a silent rewrite, and it never touches a zone you've marked off-limits.</div></details>
       <details><summary>Which stacks does it support? <span class="chev">›</span></summary><div class="ans">Any. The roles and playbooks are stack-agnostic; for anything the core doesn't cover, Vantry forges the specialist you need — web, mobile, game, data, embedded.</div></details>
       <details><summary>Updates and refunds? <span class="chev">›</span></summary><div class="ans">Lifetime updates included, and a <b>14-day no-questions refund</b>.</div></details>
@@ -301,7 +304,7 @@
   <div class="wrap reveal final">
     <span class="eyebrow">Survey, then ship</span>
     <h2>Give your agent the high ground.</h2>
-    <p class="lead" style="margin:0 auto">Stop building in the weeds. Point Vantry at your repo and see what it's been hiding.</p>
+    <p class="lead" style="margin:0 auto">Stop building in the weeds. Point Vantry at your repo — with any agent — and see what it's been hiding.</p>
     <a class="btn btn-primary" href="https://2iid.gumroad.com/l/shipcrew" target="_blank" rel="noopener" style="font-size:1rem;padding:.85em 1.5em">Get Vantry — $39 <span class="strike">$59</span></a>
   </div>
 </section>
@@ -309,7 +312,7 @@
 <footer>
   <div class="wrap">
     <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="peak-fill" d="M3 20 L10 6 L14 14 L17 9 L21 20 Z"/></svg> Vantry</span>
-    <span class="mono">A senior vantage over any codebase · billed securely by Gumroad.</span>
+    <span class="mono">One kit, any agent · a senior vantage over any codebase.</span>
   </div>
 </footer>
 
@@ -320,7 +323,6 @@
   function cur(){var t=root.getAttribute('data-theme');return t||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}
   btn&&btn.addEventListener('click',function(){root.setAttribute('data-theme',cur()==='dark'?'light':'dark');});
 
-  // entrance + reveals + counters
   requestAnimationFrame(function(){document.body.classList.add('loaded');});
   if(!reduce&&'IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
@@ -331,55 +333,54 @@
   function count(el){var to=+el.getAttribute('data-count'),d=1100,s=null;function step(ts){s=s||ts;var p=Math.min((ts-s)/d,1);el.textContent=Math.round((1-Math.pow(1-p,3))*to);if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
   document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(ev){var id=a.getAttribute('href');if(id.length<2)return;var t=document.querySelector(id);if(t){ev.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}});});
 
-  /* ---- animated 3D survey terrain (canvas, self-contained) ---- */
+  /* ---- animated topographic survey terrain (canvas) ---- */
   var cv=document.getElementById('terrain'), ctx=cv&&cv.getContext('2d');
   if(!cv||!ctx) return;
   var DPR=Math.min(window.devicePixelRatio||1,2), W=0,H=0, hidden=false;
-  var GX=52, GZ=34, spacing=30, amp=48, focal=560, CAM=560, tilt=1.03;
-  var theme={};
-  function readTheme(){var d=cur()==='dark';theme={dark:d, base:d?'245,91,67':'224,73,47', dim:d?'70,90,120':'150,165,185'};}
+  var GX=58, GZ=40, spacing=30, amp=52, focal=560, CAM=540, tilt=1.0;
+  var LINE='33,29,22', GLOW='95,122,69';
+  function readTheme(){var s=getComputedStyle(root);LINE=(s.getPropertyValue('--terr-line')||'33,29,22').trim();GLOW=(s.getPropertyValue('--terr-glow')||'95,122,69').trim();}
   readTheme();
   var mo=new MutationObserver(readTheme); mo.observe(root,{attributes:true,attributeFilter:['data-theme']});
-  window.matchMedia('(prefers-color-scheme:dark)').addEventListener&&window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',readTheme);
+  var mq=window.matchMedia('(prefers-color-scheme:dark)'); mq.addEventListener&&mq.addEventListener('change',function(){setTimeout(readTheme,20);});
   function resize(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=Math.max(1,W*DPR);cv.height=Math.max(1,H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);}
   resize(); window.addEventListener('resize',resize);
   document.addEventListener('visibilitychange',function(){hidden=document.hidden;});
-  var markers=[[12,10],[34,7],[24,20]];
+  var markers=[[14,12],[38,9],[27,24],[46,18]];
   function proj(x,y,z,ay){
     var cyr=Math.cos(ay),syr=Math.sin(ay);
     var x1=x*cyr+z*syr, z1=-x*syr+z*cyr, y1=y;
     var cxr=Math.cos(tilt),sxr=Math.sin(tilt);
     var y2=y1*cxr-z1*sxr, z2=y1*sxr+z1*cxr;
     var zc=z2+CAM; var s=focal/Math.max(60,zc);
-    return {X:W*0.62+x1*s, Y:H*0.46+y2*s, S:s};
+    return {X:W*0.60+x1*s, Y:H*0.48+y2*s, S:s};
   }
-  function hAt(i,j,t){return amp*(Math.sin(i*0.32+t*1.15)*0.5+Math.cos(j*0.29-t*0.85)*0.45+Math.sin((i+j)*0.15+t*0.55)*0.4);}
+  function hAt(i,j,t){return amp*(Math.sin(i*0.30+t*1.05)*0.5+Math.cos(j*0.27-t*0.8)*0.45+Math.sin((i+j)*0.14+t*0.5)*0.42);}
   function frame(ts){
     if(reduce){drawStatic();return;}
     if(hidden){requestAnimationFrame(frame);return;}
-    var t=ts/1000, ay=Math.sin(t*0.18)*0.13;
-    var sweep=(0.5+0.5*Math.sin(t*0.35))*GX;   // moving column index
+    var t=ts/1000, ay=Math.sin(t*0.16)*0.11;
+    var sweep=(0.5+0.5*Math.sin(t*0.3))*GX;
     ctx.clearRect(0,0,W,H);
-    // precompute points
     var P=[], i,j;
-    for(j=0;j<GZ;j++){P[j]=[];for(i=0;i<GX;i++){var wx=(i-GX/2)*spacing, wz=(j-GZ/2)*spacing, wy=hAt(i,j,t);P[j][i]=proj(wx,wy,wz,ay);P[j][i].g=Math.max(0,1-Math.abs(i-sweep)/4);}}
-    // draw wireframe
+    for(j=0;j<GZ;j++){P[j]=[];for(i=0;i<GX;i++){var wx=(i-GX/2)*spacing, wz=(j-GZ/2)*spacing, wy=hAt(i,j,t);P[j][i]=proj(wx,wy,wz,ay);P[j][i].g=Math.max(0,1-Math.abs(i-sweep)/5.5);}}
     for(j=0;j<GZ;j++){for(i=0;i<GX;i++){var p=P[j][i];
-      var depth=Math.max(0,Math.min(1,(p.S-0.35)/0.9));            // closer = brighter
+      var depth=Math.max(0,Math.min(1,(p.S-0.32)/0.85));
       var glow=p.g;
-      var a=(0.05+depth*0.28)+glow*0.5;
-      var col=glow>0.02? theme.base : theme.dim;
-      if(i<GX-1){var q=P[j][i+1];ctx.strokeStyle='rgba('+col+','+a.toFixed(3)+')';ctx.lineWidth=0.6+glow*1.1;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();}
-      if(j<GZ-1){var r=P[j+1][i];var a2=(0.05+depth*0.24)+glow*0.4;ctx.strokeStyle='rgba('+col+','+a2.toFixed(3)+')';ctx.lineWidth=0.6+glow*1.0;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(r.X,r.Y);ctx.stroke();}
+      var col=glow>0.04? GLOW:LINE;
+      var a=(0.07+depth*0.34)+glow*0.6;
+      if(i<GX-1){var q=P[j][i+1];ctx.strokeStyle='rgba('+col+','+a.toFixed(3)+')';ctx.lineWidth=0.7+glow*1.7;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();}
+      if(j<GZ-1){var r=P[j+1][i];var a2=(0.07+depth*0.3)+glow*0.5;ctx.strokeStyle='rgba('+col+','+a2.toFixed(3)+')';ctx.lineWidth=0.7+glow*1.5;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(r.X,r.Y);ctx.stroke();}
     }}
-    // sweep line glow (vertical band highlight already via .g); marker beacons
-    for(var m=0;m<markers.length;m++){var mi=markers[m][0],mj=markers[m][1];var mp=P[mj][mi];var near=Math.max(0,1-Math.abs(mi-sweep)/6);var pr=(1+Math.sin(t*3+m))*0.5;var rad=(2.4+pr*2)+near*4;
-      ctx.beginPath();ctx.fillStyle='rgba('+theme.base+','+(0.35+near*0.55).toFixed(3)+')';ctx.arc(mp.X,mp.Y,rad,0,6.283);ctx.fill();
-      ctx.beginPath();ctx.strokeStyle='rgba('+theme.base+','+(0.15+near*0.3).toFixed(3)+')';ctx.lineWidth=1;ctx.arc(mp.X,mp.Y,rad+4+pr*5,0,6.283);ctx.stroke();
+    for(var m=0;m<markers.length;m++){var mi=markers[m][0],mj=markers[m][1];if(!P[mj]||!P[mj][mi])continue;var mp=P[mj][mi];
+      var near=Math.max(0,1-Math.abs(mi-sweep)/6);var pr=(1+Math.sin(t*3+m))*0.5;var rad=2.6+pr*2+near*4;
+      ctx.beginPath();ctx.fillStyle='rgba('+GLOW+','+(0.5+near*0.45).toFixed(3)+')';ctx.arc(mp.X,mp.Y,rad,0,6.283);ctx.fill();
+      var ring=(t*40+m*30)%70;
+      ctx.beginPath();ctx.strokeStyle='rgba('+GLOW+','+Math.max(0,(1-ring/70)*(0.35+near*0.4)).toFixed(3)+')';ctx.lineWidth=1.3;ctx.arc(mp.X,mp.Y,rad+ring,0,6.283);ctx.stroke();
     }
     requestAnimationFrame(frame);
   }
-  function drawStatic(){var t=0.6,ay=0;ctx.clearRect(0,0,W,H);for(var j=0;j<GZ;j++){for(var i=0;i<GX;i++){var p=proj((i-GX/2)*spacing,hAt(i,j,t),(j-GZ/2)*spacing,ay);if(i<GX-1){var q=proj((i+1-GX/2)*spacing,hAt(i+1,j,t),(j-GZ/2)*spacing,ay);ctx.strokeStyle='rgba('+theme.dim+',0.18)';ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();}}}}
+  function drawStatic(){var t=0.6;ctx.clearRect(0,0,W,H);for(var j=0;j<GZ;j++){for(var i=0;i<GX-1;i++){var p=proj((i-GX/2)*spacing,hAt(i,j,t),(j-GZ/2)*spacing,0);var q=proj((i+1-GX/2)*spacing,hAt(i+1,j,t),(j-GZ/2)*spacing,0);ctx.strokeStyle='rgba('+LINE+',0.22)';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();}}}
   requestAnimationFrame(frame);
 })();
 </script>
