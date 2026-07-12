@@ -119,8 +119,9 @@
   .flag{font-weight:700;font-size:.66rem;padding:2px 7px;border-radius:5px;color:#fbf9f4;flex:none;min-width:26px;text-align:center}
   .flag.p0{background:var(--p0)} .flag.p1{background:var(--p1)} .flag.p2{background:var(--p2)}
   .srow .what{color:var(--ink)} .srow .loc{color:var(--faint);margin-left:auto;white-space:nowrap}
-  .survey-foot{padding:12px 16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ok);line-height:1.55}
+  .survey-foot{padding:12px 16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ok);line-height:1.55;min-height:62px}
   .survey-foot #issueCount{font-variant-numeric:tabular-nums;font-weight:700}
+  .survey-foot #cfgFile{font-weight:700;color:var(--ink);transition:opacity .2s}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:820px){.steps{grid-template-columns:1fr}}
@@ -212,17 +213,17 @@
           <div class="srow" style="animation-delay:.99s"><span class="flag p2">P2</span><span class="what">N+1 in orders.list()</span><span class="loc">svc/orders.ts:52</span></div>
           <div class="srow" style="animation-delay:1.21s"><span class="flag p2">P2</span><span class="what">hardcoded strings (no i18n)</span><span class="loc">ui/Cart.tsx</span></div>
         </div>
-        <div class="survey-foot">✓ CLAUDE.md written · <span id="issueCount">0</span> issues → Sprint 1: Stabilize &amp; Harden</div>
+        <div class="survey-foot">✓ <span id="cfgFile">CLAUDE.md</span> written · <span id="issueCount">0</span> issues → Sprint 1: Stabilize &amp; Harden</div>
       </div>
     </div>
     <div class="agents rise d5">
       <span class="lbl">Works with</span>
-      <span class="a" data-c="#d97757" data-t="#fff">Claude&nbsp;Code</span>
-      <span class="a" data-c="#10a37f" data-t="#fff">Codex</span>
-      <span class="a" data-c="#232833" data-t="#fff">Cursor</span>
-      <span class="a" data-c="#8957e5" data-t="#fff">Copilot</span>
-      <span class="a" data-c="#4285f4" data-t="#fff">Gemini</span>
-      <span class="a" data-c="#12b3a6" data-t="#fff">Windsurf</span>
+      <span class="a" data-c="#d97757" data-t="#fff" data-file="CLAUDE.md">Claude&nbsp;Code</span>
+      <span class="a" data-c="#10a37f" data-t="#fff" data-file="AGENTS.md">Codex</span>
+      <span class="a" data-c="#232833" data-t="#fff" data-file=".cursor/rules">Cursor</span>
+      <span class="a" data-c="#8957e5" data-t="#fff" data-file="copilot-instructions.md">Copilot</span>
+      <span class="a" data-c="#4285f4" data-t="#fff" data-file="GEMINI.md">Gemini</span>
+      <span class="a" data-c="#12b3a6" data-t="#fff" data-file=".windsurf/rules">Windsurf</span>
     </div>
   </div>
 </section>
@@ -362,7 +363,9 @@
 
   // agents spotlight — cycle attention through the supported tools
   var ags=document.querySelectorAll('.agents .a');
-  function lit(el,on){ if(on){el.classList.add('on');el.style.background=el.dataset.c;el.style.color=el.dataset.t;el.style.borderColor=el.dataset.c;el.style.boxShadow='0 8px 18px -9px '+el.dataset.c;} else {el.classList.remove('on');el.style.background='';el.style.color='';el.style.borderColor='';el.style.boxShadow='';} }
+  var cfgEl=document.getElementById('cfgFile');
+  function setFile(f){ if(!cfgEl||!f)return; cfgEl.style.opacity='.25'; setTimeout(function(){cfgEl.textContent=f;cfgEl.style.opacity='1';},150); }
+  function lit(el,on){ if(on){el.classList.add('on');el.style.background=el.dataset.c;el.style.color=el.dataset.t;el.style.borderColor=el.dataset.c;el.style.boxShadow='0 8px 18px -9px '+el.dataset.c;setFile(el.dataset.file);} else {el.classList.remove('on');el.style.background='';el.style.color='';el.style.borderColor='';el.style.boxShadow='';} }
   if(ags.length && !reduce){ var ai=0; lit(ags[0],true); setInterval(function(){ lit(ags[ai],false); ai=(ai+1)%ags.length; lit(ags[ai],true); },1200); }
   // survey card: the "scanning" blink travels down the findings (P0 → P1 → P2 → …)
   var srows=document.querySelectorAll('.hero-survey .srow');
