@@ -175,6 +175,75 @@
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
   .reveal.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.reveal,.rise{opacity:1!important;transform:none!important;transition:none!important}.mark svg .scan{animation:none;stroke-dashoffset:0}}
+
+  /* ---- on-watch: the crew neutralizes what the survey finds ---- */
+  .ow-scene{position:relative;width:100%;height:clamp(330px,44vw,460px);margin-top:6px;
+    background:radial-gradient(120% 90% at 50% 8%, color-mix(in srgb,var(--surface) 92%,transparent), var(--ground) 72%);
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .ow-tex{position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:linear-gradient(rgba(var(--terr-line),.06) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--terr-line),.06) 1px,transparent 1px);
+    background-size:34px 34px;-webkit-mask:radial-gradient(120% 80% at 50% 40%,#000 30%,transparent 82%);mask:radial-gradient(120% 80% at 50% 40%,#000 30%,transparent 82%)}
+  .ow-map{position:absolute;left:0;right:0;bottom:0;height:56%;pointer-events:none}
+  .ow-map svg{width:100%;height:100%;display:block}
+  .ow-map .ml{fill:none;stroke:rgb(var(--terr-line));stroke-width:1}
+  .ow-radar{position:absolute;left:50%;bottom:-42%;width:120%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;pointer-events:none;opacity:.6;
+    background:conic-gradient(from 0deg,transparent 0 300deg,rgba(var(--terr-line),.10) 350deg,transparent 360deg);
+    -webkit-mask:radial-gradient(circle,#000 62%,transparent 63%);mask:radial-gradient(circle,#000 62%,transparent 63%);animation:ow-sweep 7s linear infinite}
+  @keyframes ow-sweep{to{transform:translateX(-50%) rotate(360deg)}}
+  .ow-fleet{position:absolute;inset:0}
+  .ow-sentinel{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;animation:ow-bob 4.2s ease-in-out infinite}
+  @keyframes ow-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-9px)}}
+  .ow-stage{perspective:640px;width:56px;height:56px;position:relative}
+  .ow-med{width:56px;height:56px;position:relative;transform-style:preserve-3d;animation:ow-spin 7.5s linear infinite}
+  @keyframes ow-spin{from{transform:rotateX(15deg) rotateY(0)}to{transform:rotateX(15deg) rotateY(360deg)}}
+  .ow-face{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;backface-visibility:hidden;background:var(--fc);color:#fff;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 -6px 12px rgba(0,0,0,.28),0 10px 20px -10px var(--fc)}
+  .ow-face.b{transform:rotateY(180deg)}
+  .ow-face svg{width:29px;height:29px}
+  .ow-ring{position:absolute;top:0;left:50%;width:56px;height:56px;transform:translateX(-50%);border-radius:50%;border:2px solid var(--fc);opacity:0;animation:ow-sonar 3.4s ease-out infinite}
+  @keyframes ow-sonar{0%{transform:translateX(-50%) scale(.5);opacity:.55}100%{transform:translateX(-50%) scale(2.1);opacity:0}}
+  .ow-tag{margin-top:9px;font-family:var(--mono);font-size:.64rem;color:var(--soft);white-space:nowrap}
+  .ow-sentinel.on{z-index:5}
+  .ow-sentinel.on .ow-med{animation-duration:2.4s}
+  .ow-sentinel.on .ow-face{box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),inset 0 -6px 12px rgba(0,0,0,.28),0 0 0 4px color-mix(in srgb,var(--fc) 26%,transparent),0 14px 26px -10px var(--fc)}
+  .ow-sentinel.on .ow-tag{color:var(--fc);font-weight:600}
+  .ow-bug{position:absolute;transform:translate(-50%,-50%);width:46px;height:46px;display:grid;place-items:center;z-index:3}
+  .ow-critter{color:var(--bc);width:44px;height:44px;transition:transform .32s cubic-bezier(.3,1.5,.5,1),opacity .3s;animation:ow-skitter 2.6s ease-in-out infinite}
+  .ow-critter svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 5px color-mix(in srgb,var(--bc) 45%,transparent))}
+  .ow-critter .lg{animation:ow-legs .42s ease-in-out infinite alternate;transform-origin:22px 24px}
+  .ow-critter .at{animation:ow-legs .3s ease-in-out infinite alternate;transform-origin:22px 12px}
+  @keyframes ow-legs{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+  @keyframes ow-skitter{0%,100%{transform:translate(0,0) rotate(-3deg)}30%{transform:translate(4px,-2px) rotate(3deg)}60%{transform:translate(-3px,2px) rotate(-2deg)}}
+  .ow-bug.p0{--bc:var(--p0)} .ow-bug.p1{--bc:var(--p1)} .ow-bug.p2{--bc:var(--p2)}
+  .ow-bug.hunted .ow-critter{animation:ow-panic .16s linear infinite}
+  @keyframes ow-panic{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(2px,-1.5px) rotate(6deg)}75%{transform:translate(-2px,1.5px) rotate(-6deg)}}
+  .ow-caught{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.2);transition:opacity .3s,transform .4s cubic-bezier(.2,1.7,.4,1)}
+  .ow-ck{width:34px;height:34px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px;box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 24%,transparent),0 8px 16px -6px var(--ok)}
+  .ow-burst{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--ok);opacity:0}
+  .ow-bug.done .ow-critter{transform:scale(1.6);opacity:0;animation:none}
+  .ow-bug.done .ow-caught{opacity:1;transform:scale(1)}
+  .ow-bug.done .ow-burst{animation:ow-burst .7s ease-out}
+  @keyframes ow-burst{0%{transform:scale(.4);opacity:.75}100%{transform:scale(2.7);opacity:0}}
+  .ow-beam{position:absolute;height:2px;transform-origin:left center;z-index:2;background:linear-gradient(90deg,var(--fc),color-mix(in srgb,var(--fc) 8%,transparent));opacity:0;transition:opacity .2s;pointer-events:none;border-radius:2px}
+  .ow-beam.on{opacity:.92}
+  .ow-ret{position:absolute;width:52px;height:52px;transform:translate(-50%,-50%) scale(1.7);opacity:0;transition:all .38s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:4}
+  .ow-ret.lock{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .ow-ret i{position:absolute;width:13px;height:13px;border:2px solid var(--fc)}
+  .ow-ret i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+  .ow-ret i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+  .ow-ret i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+  .ow-ret i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+  .ow-toast{position:absolute;transform:translate(-50%,-170%);font-family:var(--mono);font-size:.64rem;white-space:nowrap;background:var(--surface);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 40%,var(--line));padding:3px 8px;border-radius:6px;opacity:0;transition:all .4s ease;pointer-events:none;z-index:6;display:flex;align-items:center;gap:5px}
+  .ow-toast.on{opacity:1;transform:translate(-50%,-205%)}
+  .ow-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px;font-family:var(--mono);font-size:.72rem;color:var(--soft)}
+  .ow-status{display:flex;align-items:center;gap:8px;min-height:18px}
+  .ow-status .lv{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.6s ease-in-out infinite}
+  .ow-status b{color:var(--ink);font-weight:600}
+  .ow-legend{display:flex;align-items:center;gap:14px}
+  .ow-legend span{display:inline-flex;align-items:center;gap:5px}
+  .ow-legend .k{width:9px;height:9px;border-radius:2px}
+  @media(max-width:560px){.ow-stage,.ow-med,.ow-ring{width:46px;height:46px}.ow-face svg{width:24px;height:24px}.ow-tag{font-size:.56rem}.ow-bug,.ow-critter{width:38px;height:38px}}
+  @media(prefers-reduced-motion:reduce){.ow-med,.ow-ring,.ow-sentinel,.ow-radar,.ow-critter,.ow-critter .lg,.ow-critter .at,.ow-status .lv{animation:none!important}.ow-med{transform:rotateX(15deg) rotateY(-24deg)}}
 </style>
 </head>
 <body>
@@ -254,6 +323,40 @@
       <div class="step"><div class="n">01 · SURVEY</div><h3>Map the terrain</h3><p>Every finding ranked P0–P3, each with its file, impact, and a fix. Adversarially verified, so false alarms don't reach you.</p><span class="cmd">/adopt audit</span></div>
       <div class="step"><div class="n">02 · ANCHOR</div><h3>A map from your real code</h3><p>Vantry writes a <span class="mono">CLAUDE.md</span> / <span class="mono">AGENTS.md</span> from what's actually there — your stack, your conventions. Every agent now shares the map.</p><span class="cmd">stack + conventions, captured</span></div>
       <div class="step"><div class="n">03 · SHIP</div><h3>Stabilize, then build</h3><p>The findings become an atomic backlog. Sprint 1 hardens what's shaky — <b>before</b> new features. Then the crew ships. Every change is a PR.</p><span class="cmd">/next → PR → review</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="onwatch">
+  <div class="wrap reveal">
+    <div class="kick">
+      <span class="eyebrow">Always on watch</span>
+      <h2>Your agents don't just find issues — they neutralize them.</h2>
+      <p class="lead">Every finding gets an owner. Whichever agent you run takes point, tracks the issue down, and closes it as a reviewed PR — <b>security first, never a silent rewrite.</b></p>
+    </div>
+    <div class="ow-scene" id="owScene" role="img" aria-label="Six AI agents, shown as brand-coloured medallions, patrol a map of your codebase and neutralize flagged bugs one by one.">
+      <div class="ow-tex" aria-hidden="true"></div>
+      <div class="ow-map" aria-hidden="true"><svg viewBox="0 0 960 260" preserveAspectRatio="none">
+        <path class="ml" stroke-opacity=".42" d="M0 176 C120 150 210 196 330 172 C470 144 560 198 700 168 C820 144 900 184 960 166"/>
+        <path class="ml" stroke-opacity=".30" d="M0 208 C130 184 230 224 360 202 C500 180 590 226 720 200 C840 178 910 212 960 198"/>
+        <path class="ml" stroke-opacity=".20" d="M0 240 C140 220 240 252 380 234 C520 216 620 254 740 232 C860 212 920 240 960 230"/>
+        <path class="ml" stroke-opacity=".28" d="M0 146 C120 120 220 160 340 138 C480 112 580 158 710 132 C830 110 910 148 960 134"/>
+        <path class="ml" stroke-opacity=".16" d="M160 120 V250 M360 108 V252 M560 120 V250 M760 116 V250"/>
+      </svg></div>
+      <div class="ow-radar" aria-hidden="true"></div>
+      <div class="ow-fleet" id="owFleet"></div>
+      <div class="ow-beam" id="owBeam" aria-hidden="true"></div>
+      <div class="ow-ret" id="owRet" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="ow-toast" id="owToast" aria-hidden="true"><span style="color:var(--ok);font-weight:700">✓</span><span id="owToastTxt">patched</span></div>
+      <div id="owBugs"></div>
+    </div>
+    <div class="ow-foot">
+      <div class="ow-status"><span class="lv" aria-hidden="true"></span><span id="owStatus">6 agents on patrol…</span></div>
+      <div class="ow-legend" aria-hidden="true">
+        <span><i class="k" style="background:var(--p0)"></i>critical</span>
+        <span><i class="k" style="background:var(--p1)"></i>warning</span>
+        <span><i class="k" style="background:var(--ok)"></i>patched</span>
+      </div>
     </div>
   </div>
 </section>
@@ -428,6 +531,78 @@
   }
   function drawStatic(){var t=0.6;ctx.clearRect(0,0,W,H);for(var j=0;j<GZ;j++){for(var i=0;i<GX-1;i++){var p=proj((i-GX/2)*spacing,hAt(i,j,t),(j-GZ/2)*spacing,0);var q=proj((i+1-GX/2)*spacing,hAt(i+1,j,t),(j-GZ/2)*spacing,0);ctx.strokeStyle='rgba('+LINE+',0.22)';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(p.X,p.Y);ctx.lineTo(q.X,q.Y);ctx.stroke();}}}
   requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+(function(){
+  var scene=document.getElementById('owScene'); if(!scene) return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var AG=[
+    {n:"Claude&nbsp;Code",c:"#d97757",g:'<svg viewBox="0 0 24 24"><g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 4v16M4 12h16M6.3 6.3l11.4 11.4M17.7 6.3L6.3 17.7"/></g><circle cx="12" cy="12" r="2.4" fill="#fff"/></svg>'},
+    {n:"Codex",c:"#10a37f",g:'<svg viewBox="0 0 24 24"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.3" fill="#fff"/></svg>'},
+    {n:"Cursor",c:"#3a4150",g:'<svg viewBox="0 0 24 24"><path d="M8 5l10 7-10 7z" fill="#fff"/></svg>'},
+    {n:"Copilot",c:"#8957e5",g:'<svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="7.5" height="7" rx="3.5" fill="#fff"/><rect x="13" y="9" width="7.5" height="7" rx="3.5" fill="#fff"/><rect x="10.4" y="11.4" width="3.2" height="2.2" rx="1" fill="#fff"/></svg>'},
+    {n:"Gemini",c:"#4285f4",g:'<svg viewBox="0 0 24 24"><path d="M12 2c.6 6 3.4 8.8 10 10-6.6 1.2-9.4 4-10 10-.6-6-3.4-8.8-10-10 6.6-1.2 9.4-4 10-10z" fill="#fff"/></svg>'},
+    {n:"Windsurf",c:"#12b3a6",g:'<svg viewBox="0 0 24 24"><g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 10q4.5-5 9 0t9 0"/><path d="M3 15.5q4.5-5 9 0t9 0"/></g></svg>'}
+  ];
+  var BUG='<svg viewBox="0 0 44 44"><g class="lg" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 20 L6 15 M15 24 L5 24 M15 29 L6 34"/><path d="M29 20 L38 15 M29 24 L39 24 M29 29 L38 34"/></g><g class="at" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 12 L14 5 M26 12 L30 5"/></g><ellipse cx="22" cy="25" rx="9" ry="11.5" fill="currentColor"/><circle cx="22" cy="13" r="5" fill="currentColor"/><line x1="22" y1="16" x2="22" y2="35" stroke="rgba(255,255,255,.45)" stroke-width="1.6"/><circle cx="19" cy="22" r="1.3" fill="#fff"/><circle cx="25" cy="22" r="1.3" fill="#fff"/></svg>';
+  var POS=[{l:8,t:27},{l:25,t:16},{l:42,t:11},{l:59,t:11},{l:76,t:16},{l:92,t:27}];
+  var fleet=document.getElementById('owFleet');
+  AG.forEach(function(a,i){
+    var s=document.createElement('div');s.className='ow-sentinel';
+    s.style.left=POS[i].l+'%';s.style.top=POS[i].t+'%';s.style.setProperty('--fc',a.c);s.style.animationDelay=(-i*0.6)+'s';
+    s.innerHTML='<div class="ow-ring"></div><div class="ow-stage"><div class="ow-med" style="animation-delay:'+(-i*0.9)+'s"><div class="ow-face">'+a.g+'</div><div class="ow-face b">'+a.g+'</div></div></div><div class="ow-tag">'+a.n+'</div>';
+    fleet.appendChild(s);
+  });
+  var BUGS=[{s:'p0',l:22,t:74,label:'RLS missing · users'},{s:'p1',l:53,t:82,label:'checkout · uncovered'},{s:'p2',l:80,t:70,label:'N+1 · dashboard'}];
+  var layer=document.getElementById('owBugs');
+  BUGS.forEach(function(b){
+    var d=document.createElement('div');d.className='ow-bug '+b.s;d.dataset.label=b.label;
+    d.style.left=b.l+'%';d.style.top=b.t+'%';
+    d.innerHTML='<div class="ow-critter">'+BUG+'</div><div class="ow-caught"><div class="ow-ck">✓</div><span class="ow-burst"></span></div>';
+    layer.appendChild(d);
+  });
+  var beam=document.getElementById('owBeam'),ret=document.getElementById('owRet'),toast=document.getElementById('owToast'),toastTxt=document.getElementById('owToastTxt'),statusEl=document.getElementById('owStatus');
+  var bugs=[].slice.call(document.querySelectorAll('#owBugs .ow-bug'));
+  var sents=[].slice.call(document.querySelectorAll('.ow-sentinel'));
+  function centerOf(el){var r=el.getBoundingClientRect(),c=scene.getBoundingClientRect();return{x:r.left-c.left+r.width/2,y:r.top-c.top+r.height/2};}
+  function nm(i){return AG[i].n.replace(/&nbsp;/g,' ');}
+  if(reduce){
+    sents[2].classList.add('on');bugs[0].classList.add('done');
+    var col=AG[2].c,p=centerOf(bugs[1]);bugs[1].classList.add('hunted');
+    ret.style.setProperty('--fc',col);ret.style.left=p.x+'px';ret.style.top=p.y+'px';ret.classList.add('lock');
+    statusEl.innerHTML='<b>Cursor</b> locked checkout · uncovered';
+    return;
+  }
+  var active=-1,ci=0,done=0;
+  function tick(){
+    if(active>=0) sents[active].classList.remove('on');
+    active=(active+1)%sents.length;sents[active].classList.add('on');
+    var col=AG[active].c;
+    if(done>=bugs.length){
+      beam.classList.remove('on');ret.classList.remove('lock');toast.classList.remove('on');
+      statusEl.innerHTML='all clear · <b>3 issues patched</b>';
+      setTimeout(function(){bugs.forEach(function(b){b.classList.remove('done');b.classList.remove('hunted');});done=0;ci=0;statusEl.innerHTML='6 agents on patrol…';},1800);
+      return;
+    }
+    while(bugs[ci].classList.contains('done')) ci=(ci+1)%bugs.length;
+    var bug=bugs[ci];
+    var sp=centerOf(sents[active].querySelector('.ow-med')),bp=centerOf(bug);
+    var dx=bp.x-sp.x,dy=bp.y-sp.y,len=Math.sqrt(dx*dx+dy*dy),ang=Math.atan2(dy,dx)*180/Math.PI;
+    beam.style.setProperty('--fc',col);beam.style.left=sp.x+'px';beam.style.top=sp.y+'px';beam.style.width=len+'px';beam.style.transform='rotate('+ang+'deg)';beam.classList.add('on');
+    ret.style.setProperty('--fc',col);ret.style.left=bp.x+'px';ret.style.top=bp.y+'px';ret.classList.add('lock');
+    bug.classList.add('hunted');
+    statusEl.innerHTML='<b>'+nm(active)+'</b> tracking '+bug.dataset.label;
+    setTimeout(function(){
+      bug.classList.remove('hunted');bug.classList.add('done');done++;
+      toast.style.left=bp.x+'px';toast.style.top=bp.y+'px';toastTxt.textContent=bug.dataset.label.split(' · ')[0]+' patched';toast.classList.add('on');
+      statusEl.innerHTML='<b>'+nm(active)+'</b> neutralized '+bug.dataset.label;
+      beam.classList.remove('on');ret.classList.remove('lock');
+      setTimeout(function(){toast.classList.remove('on');},1300);
+    },780);
+  }
+  setTimeout(function(){tick();setInterval(tick,2500);},900);
 })();
 </script>
 </body>
