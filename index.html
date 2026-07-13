@@ -124,6 +124,7 @@
   .survey-foot .ln2{color:var(--faint);margin-top:2px}
   .survey-foot #cfgFile{font-weight:700;color:var(--ink);transition:opacity .2s}
   .survey-foot #issueCount{font-variant-numeric:tabular-nums;font-weight:700;color:var(--soft)}
+  .survey-foot #sprintLabel{transition:opacity .2s}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:820px){.steps{grid-template-columns:1fr}}
@@ -286,7 +287,7 @@
         </div>
         <div class="survey-foot">
           <div class="ln1">✓ <span id="cfgFile">CLAUDE.md</span></div>
-          <div class="ln2">written · <span id="issueCount">0</span> issues → Sprint 1: Stabilize &amp; Harden</div>
+          <div class="ln2">written · <span id="issueCount">0</span> issues → <span id="sprintLabel">Sprint 1: Stabilize &amp; Harden</span></div>
         </div>
       </div>
     </div>
@@ -481,6 +482,10 @@
   // live issue counter
   var ic=document.getElementById('issueCount');
   if(ic){ if(reduce){ ic.textContent='23'; } else { setTimeout(function(){ var s2=null; requestAnimationFrame(function j(ts){s2=s2||ts;var p=Math.min((ts-s2)/1300,1);ic.textContent=Math.round((1-Math.pow(1-p,3))*23);if(p<1)requestAnimationFrame(j);}); },1250); } }
+  // the plan spans the backlog — 23 issues ≈ 5 sprints, each with its theme
+  var sp=document.getElementById('sprintLabel');
+  var SPR=['Sprint 1: Stabilize &amp; Harden','Sprint 2: Secure the core','Sprint 3: Test coverage','Sprint 4: Ship features','Sprint 5: Polish &amp; launch'];
+  if(sp && !reduce){ var spi=0; setInterval(function(){ spi=(spi+1)%SPR.length; sp.style.opacity='.25'; setTimeout(function(){sp.innerHTML=SPR[spi];sp.style.opacity='1';},170); },2800); }
 
   /* ---- animated topographic survey terrain (canvas) ---- */
   var cv=document.getElementById('terrain'), ctx=cv&&cv.getContext('2d');
@@ -524,8 +529,15 @@
     agGlyph(idx,x,y,R*.6);ctx.restore();
   }
   function drawBugC(x,y,t,panic){
-    var r=3.4+panic*1;ctx.save();ctx.globalAlpha=.88;ctx.fillStyle=P0;ctx.translate(x,y);ctx.rotate(.785);ctx.fillRect(-r,-r,r*2,r*2);ctx.restore();
-    ctx.globalAlpha=.26+.28*Math.sin(t*6+x);ctx.strokeStyle=P0;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r+3,0,6.283);ctx.stroke();ctx.globalAlpha=1;
+    var s=1+panic*.14,bl=5.4*s,bw=3.3*s,wig=Math.sin(t*12+x)*(.15+panic*.3);
+    ctx.save();ctx.translate(x,y);ctx.lineCap='round';ctx.lineWidth=1.2;ctx.strokeStyle=P0;ctx.fillStyle=P0;ctx.globalAlpha=.92;
+    for(var i=-1;i<=1;i++){var ly=i*2.5*s;ctx.beginPath();ctx.moveTo(-bw*.6,ly);ctx.lineTo(-bw-3.4,ly-1.6+i*.6+wig*3.5);ctx.stroke();ctx.beginPath();ctx.moveTo(bw*.6,ly);ctx.lineTo(bw+3.4,ly-1.6+i*.6-wig*3.5);ctx.stroke();}
+    ctx.beginPath();ctx.moveTo(-1.3,-bl*.8);ctx.lineTo(-3.4+wig*4,-bl-3.4);ctx.stroke();ctx.beginPath();ctx.moveTo(1.3,-bl*.8);ctx.lineTo(3.4+wig*4,-bl-3.4);ctx.stroke();
+    ctx.beginPath();ctx.ellipse(0,0,bw,bl,0,0,6.283);ctx.fill();
+    ctx.beginPath();ctx.arc(0,-bl-1,2*s,0,6.283);ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,-bl*.5);ctx.lineTo(0,bl*.7);ctx.stroke();
+    ctx.restore();
+    ctx.globalAlpha=.2+.22*Math.sin(t*7+x);ctx.strokeStyle=P0;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,bl+5,0,6.283);ctx.stroke();ctx.globalAlpha=1;
   }
   var HUNTS=[], nextAg=0, lastSpawn=-99, TARGET=4;
   function spawnHunt(t){var bi=22+Math.floor(Math.random()*30),bj=8+Math.floor(Math.random()*22),ag=nextAg%HB.length;nextAg++;HUNTS.push({bi:bi,bj:bj,ag:ag,ai:bi+(Math.random()-.5)*14,aj:bj-8-Math.random()*4,t0:t,prev:null});}
